@@ -14,15 +14,23 @@
  */
 const path = require('path');
  const express = require('express');
+ const hbs = require('hbs');
  // we instantiate our app as an express application by invoking express function
  const app = express();
 
  const publicDirectory = path.join(__dirname, '../public');
+ const viewsPath = path.join(__dirname, '../templates/views');
+ const partialsPath = path.join(__dirname, '../templates/partials');
 
  app.use(express.static(publicDirectory));
 
+ // set up handlebars engine and view location
  // allows you to set a value for express settings i.e. key, setting name and setting value
  app.set('view engine', 'hbs');
+ // customize views folder for express
+ app.set('views', viewsPath);
+ // configure hbs to detect partials
+ hbs.registerPartials(partialsPath);
 
  // setting up route for the template
  app.get('', (req, res) => {
@@ -45,6 +53,8 @@ const path = require('path');
  // set up route for help page
  app.get('/help', (req, res) => {
      res.render('help', {
+         title: "Help page",
+         name: "Isaac Obuya",
          message: "Contact system admin for help"
      });
  });
