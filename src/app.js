@@ -75,7 +75,34 @@ const path = require('path');
 //  });
 
  app.get('/weather', (req, res) => {
-     res.send("Weather forecast page");
+     // if address is not provided as a query string
+     if (!req.query.address) {
+         return res.send({
+             error: "You must provide a location"
+         });
+     }
+
+     const { address } = req.query;
+     res.send({
+         forecast: 'It is raining',
+         location: address,
+     });
+ });
+
+ app.get('/help/*', (req, res) => {
+     res.render("errorPage", {
+        title: "Help page",
+        name: "Isaac Obuya",
+         message: "Sorry, the help document was not found"
+     });
+ });
+
+ app.get('*', (req, res) => {
+     res.render("errorPage", {
+        title: "Error page",
+        name: "Isaac Obuya",
+        message: "404 Page not found!"
+     });
  });
 
 app.listen(3000, () => {
