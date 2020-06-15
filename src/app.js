@@ -15,6 +15,10 @@
 const path = require('path');
  const express = require('express');
  const hbs = require('hbs');
+
+ const geocode = require('./utils/geocode');
+ const forecast = require('./utils/forecast');
+
  // we instantiate our app as an express application by invoking express function
  const app = express();
 
@@ -83,9 +87,31 @@ const path = require('path');
      }
 
      const { address } = req.query;
-     res.send({
-         forecast: 'It is raining',
-         location: address,
+
+     geocode(address, (error, data) => {
+         if (error) {
+             return res.send({
+                error: "Could not get cordinates for specified location"
+             });
+         }
+         // destructure off location, latitude and longitude from data
+         const { location, latitude, longitude } = data;
+
+         // callback chaining -> the result of geocode will be used as arguement to forecast
+         forecast(latitude, longitude, (error, forecastData) => {
+             if (error) {
+                 return res.send({
+                     error: "Unable to get forecast data for the provided address"
+                 });
+                }
+                console.log(forecastData);
+               // we got forecast data succesfully
+               res.send({
+                forecast: forecastData,
+                location: location,
+                address: address
+            });
+         })
      });
  });
 
