@@ -21,6 +21,8 @@ const path = require('path');
 
  // we instantiate our app as an express application by invoking express function
  const app = express();
+ // extract port provided by heroku or use default port if running app locally
+ const port = process.env.PORT || 3000;
 
  const publicDirectory = path.join(__dirname, '../public');
  const viewsPath = path.join(__dirname, '../templates/views');
@@ -131,6 +133,6 @@ const path = require('path');
      });
  });
 
-app.listen(3000, () => {
-    console.log("Server is up and running succesfully.")
+app.listen(port, () => {
+    console.log(`Server is up and running succesfully on port ${port}`)
 });

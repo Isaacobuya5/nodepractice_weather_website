@@ -11,7 +11,9 @@ document.querySelector("form").addEventListener('submit', (event) => {
     // get refernce to the input field
     const searchText = document.querySelector("input").value;
 
-    const url = `http://localhost:3000/weather?address=${searchText}`;
+    // const url = `http://localhost:3000/weather?address=${searchText}`;
+
+    const url = `/weather?address=${searchText}`;
 
     messageOne.textContent = "Loading..."
     fetch(url).then((response) => {
